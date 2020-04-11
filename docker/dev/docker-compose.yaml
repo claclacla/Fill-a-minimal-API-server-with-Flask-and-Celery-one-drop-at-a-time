@@ -1,10 +1,16 @@
 version: '3'
 
 networks:
-  flask_api_server_network:
+  mongodb_network:
     driver: bridge
 
 services:
+  mongodb:
+    image: mongo:3.4
+    container_name: MongoDB
+    networks:
+      - mongodb_network
+
   flask-api-server:
     build: ./flask-api-server
     image: claclacla/flask-api-server
@@ -12,6 +18,6 @@ services:
     volumes:
       - "${APP_FOLDER}:/usr/src/app"
     networks:
-      - flask_api_server_network
+      - mongodb_network
     ports: 
       - "5000:5000"
