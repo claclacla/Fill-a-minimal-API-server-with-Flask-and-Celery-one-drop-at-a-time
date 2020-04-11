@@ -1,5 +1,6 @@
 FROM python:3.6-slim
 
+ENV FLASK_ENV development
 ENV FLASK_APP app.py
 
 RUN pip install Flask
