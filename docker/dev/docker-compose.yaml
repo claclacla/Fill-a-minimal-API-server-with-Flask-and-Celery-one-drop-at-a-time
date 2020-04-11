@@ -1,0 +1,17 @@
+version: '3'
+
+networks:
+  flask_api_server_network:
+    driver: bridge
+
+services:
+  flask-api-server:
+    build: ./flask-api-server
+    image: claclacla/flask-api-server
+    container_name: FlaskAPIServer
+    volumes:
+      - "${APP_FOLDER}:/usr/src/app"
+    networks:
+      - flask_api_server_network
+    ports: 
+      - "5000:5000"
