@@ -35,6 +35,9 @@ echo "APP_FOLDER=/path-to-your-playground" > .env
 # Run the environment
 sudo docker-compose -f docker/dev/docker-compose.yaml up -d
 
+# Insert a course
+curl -i -X POST localhost:5000/course -d '{"title": "Flask: An API micro-framework"}' --header "Content-Type: application/json"
+
 ```
 
 --------------------------------------------------------------------------------
