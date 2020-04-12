@@ -41,20 +41,20 @@ courseDTOParser.add_argument(
 
 @app.route('/login', methods=['POST'])
 def login():
-    teacherDTO = teacherDTOParser.parse_args()
+    teacherReqDTO = teacherDTOParser.parse_args()
 
     teacherMongoDBQueryFilter = TeacherMongoDBQueryFilter()
-    teacherMongoDBQueryFilter.username = teacherDTO["username"]
-    teacherMongoDBQueryFilter.password = teacherDTO["password"]
+    teacherMongoDBQueryFilter.username = teacherReqDTO["username"]
+    teacherMongoDBQueryFilter.password = teacherReqDTO["password"]
 
     teachers = teachersMongoDBRepository.query(teacherMongoDBQueryFilter)
 
     if teachers.count() == 0:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    response = {'access_token': create_access_token(identity=teacherDTO["username"])}
+    accessTokenResDTO = {'access_token': create_access_token(identity=teacherReqDTO["username"])}
 
-    return jsonify(response), 200
+    return jsonify(accessTokenResDTO), 200
 
 @app.route('/course', methods=["POST"])
 @jwt_required
