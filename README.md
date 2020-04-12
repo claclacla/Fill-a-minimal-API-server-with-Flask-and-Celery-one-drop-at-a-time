@@ -29,17 +29,23 @@ echo "APP_FOLDER=/path-to-your-playground" > .env
 
 --------------------------------------------------------------------------------
 
-### Executing
+### Usage
 
 ```
 # Run the environment
 sudo docker-compose -f docker/dev/docker-compose.yaml up -d
+```
 
+#### Teacher
+
+```
 # Authenticate
+# POST /login
 curl -i -X POST localhost:5000/login -d '{"username": "teacher1", "password": "password1"}' --header "Content-Type: application/json"
 
 # Insert a course
-curl -i -X POST localhost:5000/course -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODY3MjQ1OTgsIm5iZiI6MTU4NjcyNDU5OCwianRpIjoiOWZmYmFkMTktNzc2NC00NWZmLTlmMTctZWM5MWY3MjdkZWViIiwiZXhwIjoxNTg2NzI1NDk4LCJpZGVudGl0eSI6InRlYWNoZXIxIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.sEEC1XiWNU5pBfvnfzZz4MA2z07gkoPsz1ODGp__6TI" -d '{"title": "Flask: An API micro-framework"}' --header "Content-Type: application/json"
+# POST /course
+curl -i -X POST localhost:5000/course -H "Authorization: Bearer <token>" -d '{"title": "Flask: An API micro-framework"}' --header "Content-Type: application/json"
 
 ```
 
