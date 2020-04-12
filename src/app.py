@@ -31,6 +31,14 @@ teacherDTOParser.add_argument(
     help = "password is a required field"
 )
 
+courseDTOParser = reqparse.RequestParser()
+courseDTOParser.add_argument(
+    "title",
+    type = str,
+    required = True,
+    help = "title is a required field"
+)
+
 @app.route('/login', methods=['POST'])
 def login():
     teacherDTO = teacherDTOParser.parse_args()
@@ -51,11 +59,11 @@ def login():
 @app.route('/course', methods=["POST"])
 @jwt_required
 def insert_course():
-    title = request.json.get("title", None)
+    courseReqDTO = courseDTOParser.parse_args()
     
     course = Course()
-    course.title = title
+    course.title = courseReqDTO["title"]
     
-    course = coursesMongoDBRepository.create(course)
+    courseResDTO = coursesMongoDBRepository.create(course)
 
-    return jsonify({"uid": str(course.uid), "title": course.title}), 200
+    return jsonify({"uid": str(courseResDTO.uid), "title": courseResDTO.title}), 200
