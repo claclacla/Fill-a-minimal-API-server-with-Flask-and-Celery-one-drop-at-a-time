@@ -10,20 +10,19 @@ mongo = PyMongo(app)
 app.secret_key = 'dRlo9fju-dRglo03e'
 jwt = JWTManager(app)
 
-users = {
-    'teacher1': 'password1'
-}
-
 @app.route('/login', methods=['POST'])
 def login():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
 
-    if username in users and users[username] == password:
-        ret = {'access_token': create_access_token(identity=username)}
-        return jsonify(ret), 200
-        
-    return jsonify({"msg": "Bad username or password"}), 401
+    teacher = mongo.db.teachers.find_one({"username": username, "password": password})
+
+    if teacher is None:
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    response = {'access_token': create_access_token(identity=username)}
+
+    return jsonify(response), 200
 
 @app.route('/course', methods=["POST"])
 @jwt_required
