@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_restful import reqparse
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 
 from repositories.MongoDB.TeachersMongoDBRepository import TeachersMongoDBRepository
@@ -16,21 +17,34 @@ jwt = JWTManager(app)
 teachersMongoDBRepository = TeachersMongoDBRepository(app)
 coursesMongoDBRepository = CoursesMongoDBRepository(app)
 
+teacherDTOParser = reqparse.RequestParser()
+teacherDTOParser.add_argument(
+    "username",
+    type = str,
+    required = True,
+    help = "username is a required field"
+)
+teacherDTOParser.add_argument(
+    "password",
+    type = str,
+    required = True,
+    help = "password is a required field"
+)
+
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
+    teacherDTO = teacherDTOParser.parse_args()
 
     teacherMongoDBQueryFilter = TeacherMongoDBQueryFilter()
-    teacherMongoDBQueryFilter.username = username
-    teacherMongoDBQueryFilter.password = password
+    teacherMongoDBQueryFilter.username = teacherDTO["username"]
+    teacherMongoDBQueryFilter.password = teacherDTO["password"]
 
     teachers = teachersMongoDBRepository.query(teacherMongoDBQueryFilter)
 
     if teachers.count() == 0:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    response = {'access_token': create_access_token(identity=username)}
+    response = {'access_token': create_access_token(identity=teacherDTO["username"])}
 
     return jsonify(response), 200
 
