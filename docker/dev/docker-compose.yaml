@@ -11,6 +11,18 @@ services:
     networks:
       - mongodb_network
 
+  mongo-seed:
+    build: ./mongo-seed
+    image: claclacla/mongo-seed
+    container_name: MongoSeed
+    networks:
+      - mongodb_network
+    depends_on:
+      - mongodb
+    command: [
+      "mongoimport --host mongodb --port 27017 --db appDB --type json --file teachers.json --jsonArray"
+    ]
+
   flask-api-server:
     build: ./flask-api-server
     image: claclacla/flask-api-server
