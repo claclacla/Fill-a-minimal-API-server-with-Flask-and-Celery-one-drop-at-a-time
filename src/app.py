@@ -1,19 +1,20 @@
 from flask import Flask, request, jsonify
-from flask_pymongo import PyMongo
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 
 from repositories.MongoDB.TeachersMongoDBRepository import TeachersMongoDBRepository
 from repositories.MongoDB.query_filters.TeacherMongoDBQueryFilter import TeacherMongoDBQueryFilter
 
-app = Flask(__name__)
+from repositories.MongoDB.CoursesMongoDBRepository import CoursesMongoDBRepository 
+from entities.Course import Course
 
+app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://mongodb:27017/appDB"
-mongo = PyMongo(app)
 
 app.secret_key = 'dRlo9fju-dRglo03e'
 jwt = JWTManager(app)
 
 teachersMongoDBRepository = TeachersMongoDBRepository(app)
+coursesMongoDBRepository = CoursesMongoDBRepository(app)
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -36,7 +37,11 @@ def login():
 @app.route('/course', methods=["POST"])
 @jwt_required
 def insert_course():
-    courseRequestDTO = request.json
-    mongo.db.courses.insert_one(courseRequestDTO)
+    title = request.json.get("title", None)
+    
+    course = Course()
+    course.title = title
+    
+    course = coursesMongoDBRepository.create(course)
 
-    return jsonify({"title": courseRequestDTO["title"]}), 200
+    return jsonify({"uid": str(course.uid), "title": course.title}), 200

@@ -39,7 +39,7 @@ sudo docker-compose -f docker/dev/docker-compose.yaml up -d
 curl -i -X POST localhost:5000/login -d '{"username": "teacher1", "password": "password1"}' --header "Content-Type: application/json"
 
 # Insert a course
-curl -i -X POST localhost:5000/course -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODY2ODMzMjIsIm5iZiI6MTU4NjY4MzMyMiwianRpIjoiM2Y4YmQwYzItNjBlZi00ODg3LWE4MDEtMGZmZDQ0MjJhMDhkIiwiZXhwIjoxNTg2Njg0MjIyLCJpZGVudGl0eSI6InRlYWNoZXIxIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.Ss_PVdtswro4IQ2opNTraDicYx4gWAfYSVImu-63mrk" -d '{"title": "Flask: An API micro-framework"}' --header "Content-Type: application/json"
+curl -i -X POST localhost:5000/course -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODY3MjI5NTcsIm5iZiI6MTU4NjcyMjk1NywianRpIjoiZTMzZThiMTMtZmRiOC00ZGZmLWJiMWUtNjBkNTgzNDYwZTBkIiwiZXhwIjoxNTg2NzIzODU3LCJpZGVudGl0eSI6InRlYWNoZXIxIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.46lymRABcqYmWH7ZbjfcfkEY8cjcXPZLHTs8CtRsI6Y" -d '{"title": "Flask: An API micro-framework"}' --header "Content-Type: application/json"
 
 ```
 
