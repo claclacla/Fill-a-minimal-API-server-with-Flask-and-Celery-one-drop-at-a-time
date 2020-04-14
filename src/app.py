@@ -39,7 +39,7 @@ courseDTOParser.add_argument(
     help = "title is a required field"
 )
 
-@app.route('/login', methods=['POST'])
+@app.route('/user/login', methods=['POST'])
 def login():
     teacherReqDTO = teacherDTOParser.parse_args()
 
