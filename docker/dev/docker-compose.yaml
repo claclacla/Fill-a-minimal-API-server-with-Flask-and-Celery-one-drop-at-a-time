@@ -3,6 +3,8 @@ version: '3'
 networks:
   mongodb_network:
     driver: bridge
+  rabbitmq_network:
+    driver: bridge
 
 services:
   mongodb:
@@ -10,6 +12,13 @@ services:
     container_name: MongoDB
     networks:
       - mongodb_network
+
+  rabbitmq:
+    build: ./rabbitmq
+    image: claclacla/rabbitmq
+    container_name: RabbitMQ
+    networks:
+      - rabbitmq_network
 
   mongo-seed:
     build: ./mongo-seed
@@ -31,5 +40,6 @@ services:
       - "${APP_FOLDER}:/usr/src/app"
     networks:
       - mongodb_network
+      - rabbitmq_network
     ports: 
       - "5000:5000"
