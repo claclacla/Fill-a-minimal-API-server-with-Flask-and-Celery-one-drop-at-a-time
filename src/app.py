@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 
 from repositories.MongoDB.TeachersMongoDBRepository import TeachersMongoDBRepository
 from repositories.MongoDB.query_filters.TeacherMongoDBQueryFilter import TeacherMongoDBQueryFilter
+from entities.Teacher import Teacher
 
 from repositories.MongoDB.CoursesMongoDBRepository import CoursesMongoDBRepository 
 from entities.Course import Course
@@ -38,6 +39,23 @@ courseDTOParser.add_argument(
     required = True,
     help = "title is a required field"
 )
+
+# TODO: Verify if a teacher already exists
+
+@app.route('/user/signup', methods=['POST'])
+def signup():
+    teacherReqDTO = teacherDTOParser.parse_args()
+
+    teacher = Teacher()
+    teacher.username = teacherReqDTO["username"]
+    teacher.password = teacherReqDTO["password"]
+    
+    teacherResDTO = teachersMongoDBRepository.create(teacher)
+
+    return jsonify({
+        "uid": str(teacherResDTO.uid), 
+        "username": teacherResDTO.username
+    }), 200
 
 @app.route('/user/login', methods=['POST'])
 def login():
