@@ -16,14 +16,14 @@ docker-compose 1.19.0+
 ### Installing
 
 ```
-# Pull the python image
-sudo docker pull python:3.6-slim
+# Get the latest snapshot
+git clone https://github.com/claclacla/Fill-a-minimal-API-server-with-Flask-and-Celery-one-drop-at-a-time
 
-# Change the directory to the playground folder
-cd path-to-your-playground
+# Change directory
+cd Fill-a-minimal-API-server-with-Flask-and-Celery-one-drop-at-a-time
 
 # Create a .env file with your local playground folder
-echo "APP_FOLDER=/path-to-your-playground" > .env
+echo "APP_FOLDER=/path-to-this-directory/src" > .env
 
 ```
 
