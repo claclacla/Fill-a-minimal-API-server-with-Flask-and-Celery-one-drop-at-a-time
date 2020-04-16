@@ -23,7 +23,7 @@ git clone https://github.com/claclacla/Fill-a-minimal-API-server-with-Flask-and-
 cd Fill-a-minimal-API-server-with-Flask-and-Celery-one-drop-at-a-time
 
 # Create a .env file with your local playground folder
-echo "APP_FOLDER=/path-to-this-directory/src" > .env
+echo "APP_FOLDER=/path-to-this-directory" > .env
 
 ```
 

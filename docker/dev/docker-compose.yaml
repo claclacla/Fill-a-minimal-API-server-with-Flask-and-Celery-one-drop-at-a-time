@@ -49,7 +49,7 @@ services:
     image: claclacla/flask-api-server
     container_name: FlaskAPIServer
     volumes:
-      - "${APP_FOLDER}:/usr/src/app"
+      - "${APP_FOLDER}/src:/usr/src/app"
     networks:
       - mongodb_network
       - rabbitmq_network
