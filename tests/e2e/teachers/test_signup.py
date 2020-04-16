@@ -3,11 +3,11 @@ import json
 
 from faker import Faker
 
+from config import API_ADDRESS
+
 fake = Faker()
 
 # curl -i -X POST localhost:5000/user/signup -d '{"username": "teacher1@email.com", "password": "password1"}' --header "Content-Type: application/json"
-
-API_ADDRESS = "http://flask-api-server:5000"
 
 USERNAME = fake.email()
 PASSWORD = fake.word()
