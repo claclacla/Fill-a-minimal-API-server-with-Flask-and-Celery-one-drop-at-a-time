@@ -6,6 +6,8 @@ from celery import Celery
 
 from email_validator import validate_email, EmailNotValidError
 
+from errors.http.BadRequest import BadRequest
+
 from repositories.MongoDB.TeachersMongoDBRepository import TeachersMongoDBRepository
 from repositories.MongoDB.query_filters.TeacherMongoDBQueryFilter import TeacherMongoDBQueryFilter
 from entities.Teacher import Teacher
@@ -56,7 +58,7 @@ def signup():
     try:
         validate_email(teacherReqDTO["username"])
     except EmailNotValidError as e:
-        return jsonify({"message": "Bad username or password"}), 400
+        return BadRequest()
 
     teacher = Teacher()
     teacher.username = teacherReqDTO["username"]
