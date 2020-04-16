@@ -1,12 +1,16 @@
 import requests
 import json
 
+from faker import Faker
+
+fake = Faker()
+
 # curl -i -X POST localhost:5000/user/signup -d '{"username": "teacher1@email.com", "password": "password1"}' --header "Content-Type: application/json"
 
 API_ADDRESS = "http://flask-api-server:5000"
 
-USERNAME = "teacher1@email.com"
-PASSWORD = "password2"
+USERNAME = fake.email()
+PASSWORD = fake.word()
 
 def test_signup():
     url =  API_ADDRESS + '/user/signup'
@@ -21,6 +25,20 @@ def test_signup():
     responsePayload = response.json()
     assert responsePayload["uid"] is not None
     assert responsePayload['username'] == USERNAME
+
+def test_signup_check_if_exists():
+    url =  API_ADDRESS + '/user/signup'
+    
+    headers = {'Content-Type': 'application/json' } 
+    payload = {'username': fake.email(), 'password': fake.word()}
+
+    response = requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
+    
+    assert response.status_code == 200
+
+    response = requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
+    
+    assert response.status_code == 400
 
 def test_signup_with_invalid_email_address():
     url =  API_ADDRESS + '/user/signup'

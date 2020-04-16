@@ -48,9 +48,6 @@ courseDTOParser.add_argument(
     help = "title is a required field"
 )
 
-# TODO: Verify if a teacher already exists
-# TODO: Validate the username(email)
-
 @app.route('/user/signup', methods=['POST'])
 def signup():
     teacherReqDTO = teacherDTOParser.parse_args()
@@ -59,6 +56,19 @@ def signup():
         validate_email(teacherReqDTO["username"])
     except EmailNotValidError as e:
         return BadRequest()
+
+    # Check if the teacher exists
+
+    teacherMongoDBQueryFilter = TeacherMongoDBQueryFilter()
+    teacherMongoDBQueryFilter.username = teacherReqDTO["username"]
+    teacherMongoDBQueryFilter.password = teacherReqDTO["password"]
+
+    teachers = teachersMongoDBRepository.query(teacherMongoDBQueryFilter)
+
+    if teachers.count() == 1:
+        return BadRequest()
+
+    # Insert the new teacher
 
     teacher = Teacher()
     teacher.username = teacherReqDTO["username"]
