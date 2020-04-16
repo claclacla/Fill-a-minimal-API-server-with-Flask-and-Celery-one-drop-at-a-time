@@ -94,7 +94,7 @@ def login():
     teachers = teachersMongoDBRepository.query(teacherMongoDBQueryFilter)
 
     if teachers.count() == 0:
-        return jsonify({"msg": "Bad username or password"}), 400
+        return BadRequest()
 
     accessTokenResDTO = {'access_token': create_access_token(identity=teacherReqDTO["username"])}
 

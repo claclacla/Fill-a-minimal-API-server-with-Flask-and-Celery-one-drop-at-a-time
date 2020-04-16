@@ -1,16 +1,14 @@
 import requests
 import json
 
-from faker import Faker
-
 from config import API_ADDRESS
-
-fake = Faker()
+from randomize.randomString import randomString
+from randomize.randomEmail import randomEmail
 
 # curl -i -X POST localhost:5000/user/signup -d '{"username": "teacher1@email.com", "password": "password1"}' --header "Content-Type: application/json"
 
-USERNAME = fake.email()
-PASSWORD = fake.word()
+USERNAME = randomEmail()
+PASSWORD = randomString()
 
 def test_signup():
     url =  API_ADDRESS + '/user/signup'
@@ -30,7 +28,7 @@ def test_signup_check_if_exists():
     url =  API_ADDRESS + '/user/signup'
     
     headers = {'Content-Type': 'application/json' } 
-    payload = {'username': fake.email(), 'password': fake.word()}
+    payload = {'username': randomEmail(), 'password': randomString()}
 
     response = requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
     
