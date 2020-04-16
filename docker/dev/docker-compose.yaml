@@ -55,3 +55,10 @@ services:
       - rabbitmq_network
     ports: 
       - "5000:5000"
+
+  tests:
+    build: ./tests
+    image: claclacla/tests
+    container_name: Tests
+    volumes:
+      - "${APP_FOLDER}/tests:/usr/src/app"
