@@ -5,6 +5,8 @@ networks:
     driver: bridge
   rabbitmq_network:
     driver: bridge
+  api_network:
+    driver: bridge
 
 services:
   mongodb:
@@ -53,6 +55,7 @@ services:
     networks:
       - mongodb_network
       - rabbitmq_network
+      - api_network
     ports: 
       - "5000:5000"
 
@@ -62,3 +65,5 @@ services:
     container_name: Tests
     volumes:
       - "${APP_FOLDER}/tests:/usr/src/app"
+    networks:
+      - api_network

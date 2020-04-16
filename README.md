@@ -55,6 +55,15 @@ curl -i -X POST localhost:5000/course -H "Authorization: Bearer <token>" -d '{"t
 
 --------------------------------------------------------------------------------
 
+### Testing
+
+```
+# Run the tests using pytest
+sudo docker exec -it Tests pytest
+```
+
+--------------------------------------------------------------------------------
+
 ## Authors
 
 - **Simone Adelchino** - [github](https://github.com/claclacla)
