@@ -21,3 +21,33 @@ def test_signup():
     responsePayload = response.json()
     assert responsePayload["uid"] is not None
     assert responsePayload['username'] == USERNAME
+
+def test_signup_with_empty_payload():
+    url =  API_ADDRESS + '/user/signup'
+    
+    headers = {'Content-Type': 'application/json' } 
+    payload = {}
+
+    response = requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
+    
+    assert response.status_code == 400
+
+def test_signup_without_username():
+    url =  API_ADDRESS + '/user/signup'
+    
+    headers = {'Content-Type': 'application/json' } 
+    payload = {'password': PASSWORD}
+
+    response = requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
+    
+    assert response.status_code == 400
+
+def test_signup_without_password():
+    url =  API_ADDRESS + '/user/signup'
+    
+    headers = {'Content-Type': 'application/json' } 
+    payload = {'username': USERNAME}
+
+    response = requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
+    
+    assert response.status_code == 400
