@@ -2,12 +2,16 @@ from flask import Flask, request, jsonify
 from flask_restful import reqparse
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 
+from celery import Celery
+
 from repositories.MongoDB.TeachersMongoDBRepository import TeachersMongoDBRepository
 from repositories.MongoDB.query_filters.TeacherMongoDBQueryFilter import TeacherMongoDBQueryFilter
 from entities.Teacher import Teacher
 
 from repositories.MongoDB.CoursesMongoDBRepository import CoursesMongoDBRepository 
 from entities.Course import Course
+
+celery = Celery('tasks', broker='amqp://rabbitmq:5672')
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://mongodb:27017/appDB"
@@ -41,6 +45,7 @@ courseDTOParser.add_argument(
 )
 
 # TODO: Verify if a teacher already exists
+# TODO: Validate the username(email)
 
 @app.route('/user/signup', methods=['POST'])
 def signup():
@@ -51,6 +56,8 @@ def signup():
     teacher.password = teacherReqDTO["password"]
     
     teacherResDTO = teachersMongoDBRepository.create(teacher)
+
+    celery.send_task("tasks.send_signup_email", [teacher.username])
 
     return jsonify({
         "uid": str(teacherResDTO.uid), 

@@ -32,6 +32,18 @@ services:
       "mongoimport --host mongodb --port 27017 --db appDB --type json --file teachers.json --jsonArray"
     ]
 
+  celery:
+    build: ./celery
+    image: claclacla/celery
+    container_name: Celery
+    environment:
+      - SMTP_ADDRESS=smtp.mock-address.com
+      - SMTP_PORT=25
+      - SMTP_USERNAME=username
+      - SMTP_PASSWORD=password
+    networks:
+      - rabbitmq_network
+
   flask-api-server:
     build: ./flask-api-server
     image: claclacla/flask-api-server

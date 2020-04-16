@@ -41,11 +41,11 @@ sudo docker-compose -f docker/dev/docker-compose.yaml up -d
 ```
 # Signup
 # POST /user/signup
-curl -i -X POST localhost:5000/user/signup -d '{"username": "teacher1", "password": "password1"}' --header "Content-Type: application/json"
+curl -i -X POST localhost:5000/user/signup -d '{"username": "teacher1@email.com", "password": "password1"}' --header "Content-Type: application/json"
 
 # Authenticate
 # POST /user/login
-curl -i -X POST localhost:5000/user/login -d '{"username": "teacher1", "password": "password1"}' --header "Content-Type: application/json"
+curl -i -X POST localhost:5000/user/login -d '{"username": "teacher1@email.com", "password": "password1"}' --header "Content-Type: application/json"
 
 # Insert a course
 # POST /course
