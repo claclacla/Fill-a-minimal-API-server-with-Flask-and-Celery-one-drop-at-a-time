@@ -4,6 +4,8 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 
 from celery import Celery
 
+from email_validator import validate_email, EmailNotValidError
+
 from repositories.MongoDB.TeachersMongoDBRepository import TeachersMongoDBRepository
 from repositories.MongoDB.query_filters.TeacherMongoDBQueryFilter import TeacherMongoDBQueryFilter
 from entities.Teacher import Teacher
@@ -51,6 +53,11 @@ courseDTOParser.add_argument(
 def signup():
     teacherReqDTO = teacherDTOParser.parse_args()
 
+    try:
+        validate_email(teacherReqDTO["username"])
+    except EmailNotValidError as e:
+        return jsonify({"message": "Bad username or password"}), 400
+
     teacher = Teacher()
     teacher.username = teacherReqDTO["username"]
     teacher.password = teacherReqDTO["password"]
@@ -75,7 +82,7 @@ def login():
     teachers = teachersMongoDBRepository.query(teacherMongoDBQueryFilter)
 
     if teachers.count() == 0:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Bad username or password"}), 400
 
     accessTokenResDTO = {'access_token': create_access_token(identity=teacherReqDTO["username"])}
 

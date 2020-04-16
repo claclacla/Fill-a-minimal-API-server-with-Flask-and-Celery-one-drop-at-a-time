@@ -22,6 +22,16 @@ def test_signup():
     assert responsePayload["uid"] is not None
     assert responsePayload['username'] == USERNAME
 
+def test_signup_with_invalid_email_address():
+    url =  API_ADDRESS + '/user/signup'
+    
+    headers = {'Content-Type': 'application/json' } 
+    payload = {'username': 'invalid_email_address', 'password': PASSWORD}
+
+    response = requests.post(url, headers=headers, data=json.dumps(payload, indent=4))
+    
+    assert response.status_code == 400
+
 def test_signup_with_empty_payload():
     url =  API_ADDRESS + '/user/signup'
     
